@@ -25,7 +25,49 @@ const UseStateCounter = () => {
 }
 
 
-// const UseReducerCounter 
+const UseReducerCounter = () => {
+
+  // set initialState    
+  const initialState = { count: 0 }
+
+  // set action types
+  type ACTIONTYPE = 
+    {type: 'increment'; payload: number} | {type: 'decrement'; payload: number}
+
+  // define reducer function
+  // it takes a state (our current state), typeof is used to get type from initialState constant
+  // and an action which is an object and defines the mutation to be applied to the state
+  const countReducer = (state: typeof initialState, action: ACTIONTYPE) => {
+    // we decide how to act based on the type property in action
+    switch(action.type ) {
+      case 'increment':
+        return (
+          {count: state.count + 1}
+        )
+      case 'decrement':
+        return (
+          { count: state.count - 1 }
+        )
+      default:
+        throw new Error('no action')
+    }
+  }
+
+  const [state, dispatch] = useReducer(countReducer, initialState)
+
+  return (
+    <>
+      <h2>Counter using useReducer Hook</h2>
+      <Counter>
+        <Button onClick={() => dispatch({type: 'decrement', payload: 1})}>-</Button>
+        <Number>{state.count}</Number>
+        <Button onClick={() => dispatch({type: 'increment', payload: 1})}>+</Button>
+      </Counter>
+    </>
+  )
+
+
+}
 
 function App() {
 
@@ -33,6 +75,7 @@ function App() {
   return (
     <Container>
       <UseStateCounter />
+      <UseReducerCounter />
     </Container>
   )
 }
